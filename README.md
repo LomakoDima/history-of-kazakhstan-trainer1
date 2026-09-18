@@ -64,4 +64,3 @@ The Human or AI result is a writing-pattern heuristic, not proof of authorship. 
 ## License
 
 MIT — see [LICENSE](LICENSE).
-"# history-of-kazakhstan-trainer1" 

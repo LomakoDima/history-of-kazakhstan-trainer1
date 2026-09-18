@@ -96,7 +96,8 @@ async function evaluateEssay(payload) {
     body: JSON.stringify({
       model,
       store: false,
-      max_output_tokens: 1400,
+      max_output_tokens: 5000,
+      reasoning: { effort: "low" },
       instructions:
         "You are a strict but constructive university History of Kazakhstan essay evaluator. " +
         "Evaluate the English essay only against the supplied topic. Score every criterion from 0 to 10. " +
@@ -126,10 +127,18 @@ async function evaluateEssay(payload) {
     const message = data?.error?.message || "OpenAI API error (" + response.status + ").";
     throw new Error(message);
   }
+  if (data.status === "incomplete") {
+    const reason = data.incomplete_details?.reason || "unknown reason";
+    throw new Error("OpenAI response was incomplete (" + reason + "). Please run the review again.");
+  }
   const outputText = data.output_text ||
     data.output?.flatMap(item => item.content || []).find(item => item.type === "output_text")?.text;
   if (!outputText) throw new Error("OpenAI returned no review text.");
-  return JSON.parse(outputText);
+  try {
+    return JSON.parse(outputText);
+  } catch {
+    throw new Error("OpenAI returned an incomplete JSON review. Please run the review again.");
+  }
 }
 
 const server = http.createServer(async (req, res) => {
