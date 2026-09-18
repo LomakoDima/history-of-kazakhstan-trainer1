@@ -1,0 +1,16 @@
+{
+  "name": "history-of-kazakhstan-trainer",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "description": "English-language oral exam trainer for the History of Kazakhstan",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --env-file-if-exists=.env server.mjs",
+    "check": "node --check server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
